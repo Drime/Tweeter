@@ -1,25 +1,48 @@
-from  TwitterAPI import TwitterAPI, TwitterRestPager
+from TwitterAPI import TwitterAPI
+import Settings
 
-#Twitter config
-consumer_key="x2eEtVabxBHgO2ZCbPILgQ"
-consumer_secret ="NCAfNJ2TumW1c8CzIRetMuvnv7lMP6zcoRCoCzUcfg"
+#Create an empty message container
+messages = []
 
-access_token_key = "901352550-XA7os5RsxyONuHYDVGsh53pHJM1WraJ4X4WQ6TKs"
-access_token_secret = "scGqUMcvWruw8wzb6LLvBKhjbRJc6blyNHtFRRw2ckQ"
+#Retrieve tweets
+def get_tweets():
+
+    #Create a TwitterAPI object
+    api = TwitterAPI(Settings.consumer_key, Settings.consumer_secret, Settings.access_token_key, Settings.access_token_secret, auth_type='oAuth1',)
+
+    #The retrieved tweets
+    tweets = api.request('search/tweets', {'q': 'to:abnamro', 'count': '100', 'since': '2015-05-28'})
+
+    #Create a message object of every tweet
+    for tweet in tweets:
+        if 'text' in tweet:
+
+            messages.append(tweet['text'])
+
+        else:
+            tweet
+
+    #Return the collection of messages
+    return messages
 
 
+#Convert tweet to a message object.
+class message:
 
-if __name__ == "__main__":
+    #Convert JSON to a message object
+    def __init__(self, item):
 
-#def Get_Twitter():
+        self.text = item['text']
+        self.storing = storing(self.text)
+        self.toeslagen = toeslagen(self.text)
 
-    api = TwitterAPI(consumer_key, consumer_secret, access_token_key, access_token_secret, auth_type='oAuth1',)
 
-    #pulled_tweets = api.request('statuses/update', 'to:abnamro -from:abnamro')
+#Test tweet for occurrence of a certain string
+def storing(item):
+    if "storing" in item:
+        return True
 
-    pager = api.request('search/tweets', {'q': 'to:abnamro -from:abnamro', 'count': '100', 'since': '2015-05-28'})
 
-    print('jj')
-
-    for item in pager:
-        print(item['text'] if 'text' in item else item)
+def toeslagen(item):
+    if "toeslagen" in item:
+        return True
