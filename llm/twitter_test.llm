@@ -71,7 +71,7 @@ DAYOFWEEK=SU MO TU WE TH FR SA
    ATTR=3,0,BL_NO,0
    TYPE=TXT
    FATTR=PROF,8,NORM,2
-   STR="  |  bedankt Evert, jij ook |  danku! Idd een perfecte woning voor een gezin met kinderen, maar ook een ideale starterswoning. De koper heeft nog niet gereageerd! |  nee nog niet gebruikt nee maar ik zal t in de gaten houden |  "
+   STR="  |  jazeker Elvira |  bedankt Evert, jij ook |  danku! Idd een perfecte woning voor een gezin met kinderen, maar ook een ideale starterswoning. De koper heeft nog niet gereageerd! |  nee nog niet gebruikt nee maar ik zal t in de gaten houden |  "
   [MOBJE]
  [MRGNE]
 [MSGE]

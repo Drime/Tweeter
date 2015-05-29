@@ -69,6 +69,9 @@ def get_tweets():
         #add new data to tweet_container
         tweet_container= tweet_creator(tweets, tweet_container)
 
+        #tweet container always adds a blank tweet.
+        tweet_container.total -= 1
+
         #Extract the iterations
         i += 1
         ext_tweets = (tweet_container.total - (100 * i))
