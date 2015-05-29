@@ -1,6 +1,6 @@
 #Server Settings
-server_ip = "192.168.1.244:8000" #the IP address of the server running the script (string)
-tweet_loop = 10 #Seconds between retrieving tweets (int)
+server_ip = "192.168.1.244:8080" #the IP address of the server running the script (string)
+tweet_loop = 120 #Seconds between retrieving tweets (int)
 
 #Display Settings
 inova_user = 'admin'

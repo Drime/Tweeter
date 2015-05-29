@@ -1,5 +1,7 @@
 import telnetlib
 import Settings
+import time
+
 
 def update_display(filename):
 
@@ -35,15 +37,21 @@ def update_display(filename):
                 #go the the message folder.
                 display.write("cd /inova/local_msgs" + "\r\n")
 
+                #Wait for 1 second
+                time.sleep(1)
+
                 #Remove the file if it exists.
                 display.write("rm "+filename+".llm" + "\r\n")
 
+                #Wait for 1 second
+                time.sleep(1)
+
                 #Download the file with wget.
-                display.write("wget http://" + Settings.server_ip + "/" + filename+".llm" + "\r\n")
+                display.write("wget http://" + Settings.server_ip + "/llm/" + filename+".llm" + "\r\n")
 
                 print('COMMANDS DELIVERED')
 
-                display.write('exit' + "\r\n")
+                display.write('logout' + "\r\n")
 
             except:
 
@@ -63,3 +71,5 @@ def update_display(filename):
 
     except:
         print'CONNECTION FAILED'
+
+    return "success"

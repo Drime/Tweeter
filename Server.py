@@ -4,6 +4,8 @@ import thread
 import Twitter
 import time
 import Settings
+import Update
+import LLM
 
 #The HTTP server which will be started in a seperated thread.
 class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
@@ -32,19 +34,44 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 if __name__=="__main__":
 
     #Create an HTTP server to host the .LLM files
-    httpd = StoppableHTTPServer(("127.0.0.1",8080), SimpleHTTPServer.SimpleHTTPRequestHandler)
+    httpd = StoppableHTTPServer(("0.0.0.0",8080), SimpleHTTPServer.SimpleHTTPRequestHandler)
     thread.start_new_thread(httpd.serve, ())
+
+
+
+
 
     #The loop for retrieving tweets
     while True:
+
         print("Collecting tweets!")
 
         #Retrieves the messages container.
         tweets = Twitter.get_tweets()
 
-        #Do something for every tweet in the container.
-        for tweet in tweets:
-            print(tweet)
+
+        tweet = ' | '
+        i = 1
+
+        while len(tweet) < 200 and i < tweets.total:
+
+
+            try:
+                if tweets.storingen >= i:
+                    tweet += "[STORING]" + str(tweets.storingentweets[i] + " | ")
+
+                else:
+
+                    tweet += str(tweets.normaltweets[i] + " | ")
+                i += 1
+            except:
+                i += 1
+        print('tweet is long: ' + str(len(tweet)))
+
+
+        LLM.create_llm(tweet, str(tweets.total), str(tweets.storingen))
+
+        print(Update.update_display("twitter_test"))
 
         time.sleep(Settings.tweet_loop)
 

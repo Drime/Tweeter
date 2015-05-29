@@ -6,12 +6,13 @@ class Messages:
 
     #Sets the attributes.
     def __init__(self):
-        self.tweets = []
-        self.storingtweets = []
+        self.normaltweets = [0]
+        self.storingtweets = [0]
         self.storingen = 0
-        self.toeslagentweets = []
+        self.toeslagentweets = [0]
         self.toeslagen = 0
         self.total = 0
+        self.lid = ''
 
 #Convert tweet to a message object.
 class Message:
@@ -22,11 +23,14 @@ class Message:
         self.text = item['text']
         self.storing = storing(self.text)
         self.toeslagen = toeslagen(self.text)
+        self.idn = item["id"]
 
 
 #Test tweet for occurrence of a certain string
 def storing(item):
     if "storing" in item:
+        return True
+    elif "storing?" in item:
         return True
     else:
         return False
@@ -38,11 +42,13 @@ def toeslagen(item):
     else:
         return False
 
-#Create an empty message container
-tweet_container = Messages
+
 
 #Retrieve tweets
 def get_tweets():
+
+    #Create an empty message container
+    tweet_container = Messages()
 
     #Create a TwitterAPI object
     api = TwitterAPI(Settings.consumer_key, Settings.consumer_secret, Settings.access_token_key, Settings.access_token_secret, auth_type='oAuth1',)
@@ -50,7 +56,33 @@ def get_tweets():
     #Retrieve the last 100 tweets
     tweets = api.request('search/tweets', {'q': 'to:abnamro', 'count': '100', 'since': '2015-05-29'})
 
-    #Create a message object of every tweet
+    tweet_container= tweet_creator(tweets, tweet_container)
+
+    ext_tweets = tweet_container.total
+    i = 0
+
+    while ext_tweets == (100) :
+
+        max_id = tweet_container.lid
+        tweets = api.request('search/tweets', {'q': 'to:abnamro', 'count': '100', 'since': '2015-05-29', 'max_id': +max_id })
+
+        #add new data to tweet_container
+        tweet_container= tweet_creator(tweets, tweet_container)
+
+        #Extract the iterations
+        i += 1
+        ext_tweets = (tweet_container.total - (100 * i))
+
+
+    #Return the message container
+    return tweet_container
+
+def remove_aab(tweet):
+
+    return tweet.replace('@ABNAMRO', '')
+
+def tweet_creator(tweets, tweet_container):
+        #Create a message object of every tweet
     for tweet in tweets:
 
         #Validate returned JSON object
@@ -62,25 +94,26 @@ def get_tweets():
             #Wrap the tweets into a container.
             if tweet_message.storing:
 
-                tweet_container.storingtweets.append(tweet_message.text)
+                tweet_container.storingtweets.append(remove_aab(tweet_message.text))
 
                 tweet_container.storingen += 1
                 tweet_container.total += 1
 
             elif tweet_message.toeslagen:
 
-                tweet_container.toeslagentweets.append(tweet_message.text)
+                tweet_container.toeslagentweets.append(remove_aab(tweet_message.text))
 
                 tweet_container.toeslagen += 1
                 tweet_container.total += 1
 
             else:
 
-                tweet_container.tweets.append(tweet_message.text)
+                tweet_container.normaltweets.append(remove_aab(tweet_message.text))
                 tweet_container.total += 1
+
+            tweet_container.lid = tweet_message.idn
 
         else:
             tweet
 
-    #Return the message container
-    return Messages
+    return tweet_container
