@@ -3,7 +3,7 @@ import Settings
 
 def update_display(filename):
 
-    filename = "test"
+    filename = "twitter_test"
 
     #Connect to the display
     try:
@@ -32,11 +32,14 @@ def update_display(filename):
             #Do something on the display.
             try:
 
-                #go the the message folder
+                #go the the message folder.
                 display.write("cd /inova/local_msgs" + "\r\n")
 
-                #Download the file with wget
-                display.write("wget http://"+Settings.server_ip+"/"+filename+".llm" + "\r\n")
+                #Remove the file if it exists.
+                display.write("rm "+filename+".llm" + "\r\n")
+
+                #Download the file with wget.
+                display.write("wget http://" + Settings.server_ip + "/" + filename+".llm" + "\r\n")
 
                 print('COMMANDS DELIVERED')
 

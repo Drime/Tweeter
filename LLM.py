@@ -1,1 +1,1 @@
-__author__ = 'ibrules'
+#Open the twitter template

@@ -5,6 +5,7 @@ import Twitter
 import time
 import Settings
 
+#The HTTP server which will be started in a seperated thread.
 class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 
     def server_bind(self):
@@ -34,7 +35,6 @@ if __name__=="__main__":
     httpd = StoppableHTTPServer(("127.0.0.1",8080), SimpleHTTPServer.SimpleHTTPRequestHandler)
     thread.start_new_thread(httpd.serve, ())
 
-
     #The loop for retrieving tweets
     while True:
         print("Collecting tweets!")
@@ -48,4 +48,5 @@ if __name__=="__main__":
 
         time.sleep(Settings.tweet_loop)
 
+    #Stops the HTTP server that is serving llm files.
     httpd.stop()
