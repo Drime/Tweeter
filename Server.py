@@ -1,15 +1,18 @@
-import SimpleHTTPServer, BaseHTTPServer
+import SimpleHTTPServer
+import BaseHTTPServer
 import socket
 import thread
-import Twitter
 import time
+
+import Twitter
 import Settings
 import Update
 import LLM
+import Audio
 
-#The HTTP server which will be started in a seperated thread.
+
+# The HTTP server which will be started in a separated thread.
 class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
-
     def server_bind(self):
         BaseHTTPServer.HTTPServer.server_bind(self)
         self.socket.settimeout(1)
@@ -31,49 +34,41 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
         while self.run:
             self.handle_request()
 
-if __name__=="__main__":
 
-    #Create an HTTP server to host the .LLM files
-    httpd = StoppableHTTPServer(("0.0.0.0",8080), SimpleHTTPServer.SimpleHTTPRequestHandler)
+if __name__ == "__main__":
+
+    # Create an HTTP server to host the .LLM files
+    httpd = StoppableHTTPServer(("0.0.0.0", Settings.server_port), SimpleHTTPServer.SimpleHTTPRequestHandler)
     thread.start_new_thread(httpd.serve, ())
 
+    # Set a 'storing' counter for audio clips.
+    storing_c = 0
 
-
-
-
-    #The loop for retrieving tweets
+    # Wash, Rinse, Repeat.
     while True:
 
         print("Collecting tweets!")
 
-        #Retrieves the messages container.
+        # Retrieves the messages container.
         tweets = Twitter.get_tweets()
 
+        # Create the llm file
+        LLM.build_llm(tweets)
 
-        tweet = ' | '
-        i = 1
+        # Send a message to the display to retrieve the LLM file.
+        Update.update_display(Settings.filename)
 
-        while len(tweet) < 200 and i < tweets.total:
+        # Play audio when a 'storing' is discovered.
+        if storing_c < tweets.storingen:
 
+            # Play the audio file.
+            Audio.storing()
 
-            try:
-                if tweets.storingen >= i:
-                    tweet += "[STORING]" + str(tweets.storingentweets[i] + " | ")
+            # Set the counter to the 'storing' level.
+            storing_c = tweets.storingen
 
-                else:
-
-                    tweet += str(tweets.normaltweets[i] + " | ")
-                i += 1
-            except:
-                i += 1
-        print('tweet is long: ' + str(len(tweet)))
-
-
-        LLM.create_llm(tweet, str(tweets.total), str(tweets.storingen))
-
-        print(Update.update_display("twitter_test"))
-
+        # Wait for a set amount of time.
         time.sleep(Settings.tweet_loop)
 
-    #Stops the HTTP server that is serving llm files.
+    # Stops the HTTP server that is serving llm files.
     httpd.stop()

@@ -2,26 +2,24 @@ import telnetlib
 import Settings
 import time
 
-
+# Connect to the display with telnet.
 def update_display(filename):
 
-    filename = "twitter_test"
-
-    #Connect to the display
+    # Connect to the display
     try:
 
-        #Connect to the server
+        # Connect to the server
         display = telnetlib.Telnet(Settings.inova_host)
 
         try:
-            #Enter username
+            # Enter username
             display.read_until("LED_DISPLAY_1 login: ")
             display.write(Settings.inova_user.encode('ascii') + "\r\n")
 
             print('USERNAME ACCEPTED')
 
             try:
-                #Enter password
+                # Enter password
                 display.read_until("Password: ")
                 display.write(Settings.inova_password.encode('ascii') + "\r\n")
 
@@ -31,26 +29,26 @@ def update_display(filename):
 
                 print('PASSWORD FAILED')
 
-            #Do something on the display.
+            # Do something on the display.
             try:
 
-                #go the the message folder.
+                # cd to the the message folder.
                 display.write("cd /inova/local_msgs" + "\r\n")
 
-                #Wait for 1 second
+                # Wait for 1 second
                 time.sleep(1)
 
-                #Remove the file if it exists.
-                display.write("rm "+filename+".llm" + "\r\n")
+                # Remove the file if it exists.
+                display.write("rm " + filename + ".llm" + "\r\n")
 
-                #Wait for 1 second
+                # Wait for 1 second
                 time.sleep(1)
 
-                #Download the file with wget.
-                display.write("wget http://" + Settings.server_ip + "/llm/" + filename+".llm" + "\r\n")
+                # Download the file with wget.
+                display.write("wget http://" + Settings.server_ip + ':' + str(
+                    Settings.server_port) + "/llm/" + filename + ".llm" + "\r\n")
 
-                print('COMMANDS DELIVERED')
-
+                # Logout from the display.
                 display.write('logout' + "\r\n")
 
             except:
@@ -61,15 +59,13 @@ def update_display(filename):
 
             print 'FAILED TO LOGIN'
 
-        #Collect and discard session data
+        # Collect and discard session data (required)
         sess = display.read_all()
         print(sess)
 
-        #Close the connection
+        # Close the connection
         display.close()
         print('CONNECTION CLOSED')
 
     except:
         print'CONNECTION FAILED'
-
-    return "success"

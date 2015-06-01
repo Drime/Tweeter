@@ -43,7 +43,7 @@ DAYOFWEEK=SU MO TU WE TH FR SA
    ATTR=1,0,BL_NO,0
    TYPE=TXT
    FATTR=PROF,8,NORM,2
-   STR="Storingen: 0 "
+   STR="Storingen: 2 "
   [MOBJE]
  [MRGNE]
 
@@ -57,7 +57,7 @@ DAYOFWEEK=SU MO TU WE TH FR SA
    ATTR=2,0,BL_NO,0
    TYPE=TXT
    FATTR=PROF,8,NORM,2
-   STR="Tweets: 124 "
+   STR="Tweets: 50 "
   [MOBJE]
  [MRGNE]
 
@@ -71,7 +71,7 @@ DAYOFWEEK=SU MO TU WE TH FR SA
    ATTR=3,0,BL_NO,0
    TYPE=TXT
    FATTR=PROF,8,NORM,2
-   STR="  |  jazeker Elvira |  bedankt Evert, jij ook |  danku! Idd een perfecte woning voor een gezin met kinderen, maar ook een ideale starterswoning. De koper heeft nog niet gereageerd! |  nee nog niet gebruikt nee maar ik zal t in de gaten houden |  "
+   STR="  | [STORING] De enige automaat in het dorp heeft erg vaak een storing de laatste tijd. Enig idee wanneer het is opgelost? #vaals #pinnen | [STORING] alweer storing ? Pff.. |  OK, dank Floris! |  ik wacht op m'n loon! Wilde net gaan shoppen haha. |  "
   [MOBJE]
  [MRGNE]
 [MSGE]

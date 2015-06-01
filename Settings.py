@@ -1,15 +1,18 @@
 #Server Settings
-server_ip = "192.168.1.244:8080" #the IP address of the server running the script (string)
+server_ip = '192.168.1.244' #Either IP or Zeroconf
+server_port = 8080 #(int)
 tweet_loop = 120 #Seconds between retrieving tweets (int)
+filename = 'twitter_test' #Name of the LLM file used on the led-display
+audio_clip = 'voice.wav' #Choose between voice.wav or whoop.wav
 
 #Display Settings
 inova_user = 'admin'
 inova_password = '1n0v@'
-inova_host = 'led_display_1.local'
+inova_host = 'led_display_1.local' #Either IP or Zeroconf
 
 #Twitter Settings
-consumer_key="x2eEtVabxBHgO2ZCbPILgQ"
-consumer_secret ="NCAfNJ2TumW1c8CzIRetMuvnv7lMP6zcoRCoCzUcfg"
+consumer_key=""
+consumer_secret =""
 
-access_token_key = "901352550-XA7os5RsxyONuHYDVGsh53pHJM1WraJ4X4WQ6TKs"
-access_token_secret = "scGqUMcvWruw8wzb6LLvBKhjbRJc6blyNHtFRRw2ckQ"
+access_token_key = ""
+access_token_secret = ""
